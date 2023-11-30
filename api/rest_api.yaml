@@ -1,0 +1,223 @@
+openapi: 3.0.0
+info:
+  title: API
+  description: API for social network
+  version: 0.0.1
+servers:
+  - url: api/v1
+paths:
+  /users/{userId}/friends:
+    get:
+      summary: просмотр друзей пользователя
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of user's friends
+
+  /users/friends/:
+    post:
+      summary: добавление друга
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+      responses:
+        '200':
+          description: OK - friend was added
+
+  /users/{userId}/friends/{friendId}:
+    delete:
+      summary: удаление друга
+      parameters:
+         - name: userId
+           in: path
+           required: true
+           description: id пользователя
+           schema:
+             type: integer
+
+         - name: friendId
+           in: path
+           required: true
+           description: id друга
+           schema:
+             type: integer
+      responses:
+        '200':
+          description: OK - friend was deleted
+
+
+  /users/{userId}:
+    get:
+      summary: просмотр анкеты пользователя
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: info about user
+
+
+  /users/{userId}/feed/posts:
+    post:
+      summary: публикация поста в ленту
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                content:
+                  type: string
+                date:
+                  type: string
+      responses:
+        '200':
+          description: OK - post was added into feed
+
+
+  /users/{userId}/posts/media:
+    post:
+      summary: загрузка медиа файлов для постов
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                content:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK - media was uploaded to post
+
+  /users/{userId}/feed:
+    get:
+      summary: ппросмотр ленты постов
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User's feed
+
+
+  /users/{userId}/chats:
+    get:
+      summary: просмотр диалогов и чатов пользователя
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of user's chats
+
+  /users/{userId}/chats/{chatId}:
+    get:
+      summary: получение сообщений из чата
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+
+        - name: chatId
+          in: path
+          required: true
+          description: id чата пользователя
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of messages from user's chat
+
+  /users/{userId}/chats/{chatId}/message:
+    post:
+      summary: отправка сообщения в чат
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: id пользователя
+          schema:
+            type: integer
+
+        - name: chatId
+          in: path
+          required: true
+          description: id чата
+          schema:
+            type: integer
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '200':
+          description: OK - messages was sended to chat
